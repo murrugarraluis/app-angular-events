@@ -13,7 +13,7 @@
             <div *ngFor="let city of cities" class="m-2">
                 <input type="radio" id="{{city}}" class="hidden" name="city" [value]="city" [(ngModel)]="selectedCity">
                 <label for="{{city}}" class="cursor-pointer text-gray-800 hover:bg-blue-500 hover:text-white bg-white rounded-3xl border border-blue-300 shadow-sm p-2
-            md:w-auto {{ selectedCity === city ? 'bg-blue-500 text-blue-200' : '' }}">{{city}}</label>
+            md:w-auto {{ selectedCity === city ? 'bg-blue-500 text-blue-200' : '' }}">{{ city }}</label>
             </div>
         </div>
     </div>
@@ -23,22 +23,22 @@
             <div *ngFor="let city of cities" class="m-2">
                 <input type="radio" id="{{city}}" class="hidden" name="city" [value]="city" [(ngModel)]="selectedCity">
                 <label for="{{city}}" class="cursor-pointer text-gray-800 hover:bg-blue-500 hover:text-white bg-white rounded-3xl border border-blue-300 shadow-sm p-2
-            md:w-auto {{ selectedCity === city ? 'bg-blue-500 text-blue-200' : '' }}">{{city}}</label>
+            md:w-auto {{ selectedCity === city ? 'bg-blue-500 text-blue-200' : '' }}">{{ city }}</label>
             </div>
         </div>
     </div>
 </div>
 <div class="container mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        @for (item of items; track item.title) {
+        @for (item of items; track item.id) {
             <div class="max-w-xl rounded-xl overflow-hidden shadow-5 cursor-pointer hover:shadow-7">
-                <img [src]="item.image" alt="Placeholder" class="object-cover mx-auto max-w-full max-h-16rem">
+                <img [src]="item.poster" alt="Placeholder" class="object-cover mx-auto max-w-full max-h-16rem">
                 <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2">{{ item.title }}</div>
-                    <p class="text-gray-700 text-base">{{ item.date }}</p>
+                    <div class="font-bold text-xl mb-2">{{ item.name }}</div>
+                    <p class="text-gray-700 text-base">{{ item.date + ' ' + item.time }}</p>
                 </div>
                 <div class="px-6 py-4">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button (click)="showMore(item.slug)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                         Ver Más
                     </button>
                 </div>
@@ -46,6 +46,7 @@
         }
     </div>
     <div class="mt-6">
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="30"></p-paginator>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+                     [totalRecords]="30"></p-paginator>
     </div>
 </div>

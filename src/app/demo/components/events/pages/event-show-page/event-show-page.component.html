@@ -1,1 +1,18 @@
-<p>event-show-page works!</p>
+<div class="relative h-screen flex items-start justify-center">
+    <img [src]="event.poster" class="h-1/2 md:h-3/4 blur-lg absolute inset-0 w-full" alt="Descripción de la imagen con blur">
+    <div class="absolute w-full max-w-5xl h-full py-8 px-4">
+        <img [src]="event.poster" class="w-full max-w-5xl h-1/3 md:h-1/2" alt="Descripción de la imagen sin blur">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h1 class="text-3xl font-bold mb-2">{{ event.name }}</h1>
+            <div class="flex items-center space-x-2 mb-2">
+                <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full flex items-center">
+                    {{ event.date }}
+                </span>
+                <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full flex items-center">
+                    {{ event.city.name }}
+                </span>
+            </div>
+            <div [innerHTML]="event.content"></div>
+        </div>
+    </div>
+</div>
