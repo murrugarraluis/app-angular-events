@@ -17,6 +17,9 @@ import {SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ToastModule} from "primeng/toast";
 import {ToolbarModule} from "primeng/toolbar";
+import {EditorModule} from "primeng/editor";
+import {NgxEditorModule} from "ngx-editor";
+import {CalendarModule} from "primeng/calendar";
 
 
 @NgModule({
@@ -41,6 +44,9 @@ import {ToolbarModule} from "primeng/toolbar";
         TableModule,
         ToastModule,
         ToolbarModule,
+        EditorModule,
+        NgxEditorModule,
+        CalendarModule,
     ]
 })
 export class EventsAdminModuleModule {

@@ -3,7 +3,15 @@ import {Product} from "../../../../api/product";
 import {ProductService} from "../../../../service/product.service";
 import {MessageService} from "primeng/api";
 import {Table} from "primeng/table";
-
+import {Editor} from "ngx-editor";
+interface UploadEvent {
+    originalEvent: Event;
+    files: File[];
+}
+interface City {
+    name: string;
+    code: string;
+}
 @Component({
     selector: 'app-event-crud-page',
     templateUrl: './event-crud-page.component.html',
@@ -11,7 +19,12 @@ import {Table} from "primeng/table";
     providers: [MessageService]
 })
 export class EventCrudPageComponent {
-    productDialog: boolean = false;
+    date: Date[] | undefined;
+    editor: Editor;
+    html = '';
+    text: string | undefined;
+
+    productDialog: boolean = true;
 
     deleteProductDialog: boolean = false;
 
@@ -28,6 +41,8 @@ export class EventCrudPageComponent {
     cols: any[] = [];
 
     statuses: any[] = [];
+    cities: City[] | undefined;
+
 
     rowsPerPageOptions = [5, 10, 20];
 
@@ -35,6 +50,15 @@ export class EventCrudPageComponent {
     }
 
     ngOnInit() {
+        this.cities = [
+            { name: 'New York', code: 'NY' },
+            { name: 'Rome', code: 'RM' },
+            { name: 'London', code: 'LDN' },
+            { name: 'Istanbul', code: 'IST' },
+            { name: 'Paris', code: 'PRS' }
+        ];
+
+        this.editor = new Editor();
         this.productService.getProducts().then(data => this.products = data);
 
         this.cols = [
@@ -136,6 +160,9 @@ export class EventCrudPageComponent {
         }
 
         return index;
+    }
+    onUpload(event: UploadEvent) {
+        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
     }
 
     createId(): string {
