@@ -44,7 +44,7 @@ export class EventCrudPageComponent {
 
     products: Product[] = [];
 
-    product: Product = {};
+    event: Event | null = null;
 
     selectedProducts: Product[] = [];
 
@@ -112,9 +112,9 @@ export class EventCrudPageComponent {
     }
 
     openNew() {
-        this.product = {};
-        this.submitted = false;
-        this.productDialog = true;
+        // this.product = {};
+        // this.submitted = false;
+        // this.productDialog = true;
     }
 
     show(event: Event) {
@@ -127,13 +127,13 @@ export class EventCrudPageComponent {
     }
 
     editProduct(product: Product) {
-        this.product = {...product};
-        this.productDialog = true;
+        // this.product = {...product};
+        // this.productDialog = true;
     }
 
-    deleteProduct(product: Product) {
+    deleteProduct(event: Event) {
         this.deleteProductDialog = true;
-        this.product = {...product};
+        this.event = {...event};
     }
 
     confirmDeleteSelected() {
@@ -145,9 +145,18 @@ export class EventCrudPageComponent {
 
     confirmDelete() {
         this.deleteProductDialog = false;
-        this.products = this.products.filter(val => val.id !== this.product.id);
-        this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
-        this.product = {};
+        this.eventService.delete(this.event.id).subscribe({
+            next: response => {
+                this.getEvent(this.page, '', '', this.search)
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Evento Eliminado',
+                    life: 3000
+                });
+            }
+        })
+        this.event = null;
     }
 
     onPageChange(event: PageEvent) {
@@ -166,51 +175,51 @@ export class EventCrudPageComponent {
     }
 
     saveProduct() {
-        this.submitted = true;
-
-        if (this.product.name?.trim()) {
-            if (this.product.id) {
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-                this.products[this.findIndexById(this.product.id)] = this.product;
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Updated',
-                    life: 3000
-                });
-            } else {
-                this.product.id = this.createId();
-                this.product.code = this.createId();
-                this.product.image = 'product-placeholder.svg';
-                // @ts-ignore
-                this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-                this.products.push(this.product);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000
-                });
-            }
-
-            this.products = [...this.products];
-            this.productDialog = false;
-            this.product = {};
-        }
+        // this.submitted = true;
+        //
+        // if (this.product.name?.trim()) {
+        //     if (this.product.id) {
+        //         // @ts-ignore
+        //         this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
+        //         this.products[this.findIndexById(this.product.id)] = this.product;
+        //         this.messageService.add({
+        //             severity: 'success',
+        //             summary: 'Successful',
+        //             detail: 'Product Updated',
+        //             life: 3000
+        //         });
+        //     } else {
+        //         this.product.id = this.createId();
+        //         this.product.code = this.createId();
+        //         this.product.image = 'product-placeholder.svg';
+        //         // @ts-ignore
+        //         this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
+        //         this.products.push(this.product);
+        //         this.messageService.add({
+        //             severity: 'success',
+        //             summary: 'Successful',
+        //             detail: 'Product Created',
+        //             life: 3000
+        //         });
+        //     }
+        //
+        //     this.products = [...this.products];
+        //     this.productDialog = false;
+        //     this.product = {};
+        // }
     }
 
-    findIndexById(id: string): number {
-        let index = -1;
-        for (let i = 0; i < this.products.length; i++) {
-            if (this.products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
+    // findIndexById(id: string): number {
+    //     let index = -1;
+    //     for (let i = 0; i < this.products.length; i++) {
+    //         if (this.products[i].id === id) {
+    //             index = i;
+    //             break;
+    //         }
+    //     }
+    //
+    //     return index;
+    // }
 
     onSearch(value) {
         this.getEvent(this.page, '', '', this.search)
@@ -220,14 +229,14 @@ export class EventCrudPageComponent {
         this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
     }
 
-    createId(): string {
-        let id = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
-    }
+    // createId(): string {
+    //     let id = '';
+    //     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //     for (let i = 0; i < 5; i++) {
+    //         id += chars.charAt(Math.floor(Math.random() * chars.length));
+    //     }
+    //     return id;
+    // }
 
     // onGlobalFilter(table: Table, event: Event) {
     //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

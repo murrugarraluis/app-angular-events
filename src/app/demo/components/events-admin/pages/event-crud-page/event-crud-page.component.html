@@ -100,16 +100,16 @@
         <p-dialog [(visible)]="productDialog" [style]="{width: '750px'}" header="Product Details" [modal]="true"
                   class="p-fluid">
             <ng-template pTemplate="content">
-                <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.image" width="150"
-                     class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
+                <img [src]="event.poster" [alt]="event.name" width="150"
+                     class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="event.poster">
                 <div class="field my-2 flex justify-center items-center">
                     <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
                 </div>
                 <div class="field my-2">
                     <label for="name">Name</label>
-                    <input class="p-2" type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus
-                           [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">Name is required.</small>
+                    <input class="p-2" type="text" pInputText id="name" [(ngModel)]="event.name" required autofocus
+                           [ngClass]="{'ng-invalid ng-dirty' : submitted && !event.name}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.name">Name is required.</small>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-3 my-2">
                     <div class="field">
@@ -151,29 +151,16 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteProductDialog" header="Eliminar" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="product">Are you sure you want to delete <b>{{ product.name }}</b>?</span>
+                <span *ngIf="event">Estas seguro de eliminar el evento <b>{{ event.name }}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
                         (click)="deleteProductDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
                         (click)="confirmDelete()"></button>
-            </ng-template>
-        </p-dialog>
-
-        <p-dialog [(visible)]="deleteProductsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Are you sure you want to delete selected products?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-                        (click)="deleteProductsDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
-                        (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
     </div>
