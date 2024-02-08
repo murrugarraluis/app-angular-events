@@ -100,54 +100,57 @@
         <p-dialog [(visible)]="productDialog" [style]="{width: '750px'}" header="Product Details" [modal]="true"
                   class="p-fluid">
             <ng-template pTemplate="content">
-                <img [src]="event.poster" [alt]="event.name" width="150"
-                     class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="event.poster">
-                <div class="field my-2 flex justify-center items-center">
-                    <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
-                </div>
-                <div class="field my-2">
-                    <label for="name">Name</label>
-                    <input class="p-2" type="text" pInputText id="name" [(ngModel)]="event.name" required autofocus
-                           [ngClass]="{'ng-invalid ng-dirty' : submitted && !event.name}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !event.name">Name is required.</small>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-3 my-2">
-                    <div class="field">
-                        <label for="name">Categoría</label>
-                        <p-dropdown [options]="cities" optionLabel="name" placeholder="Select a City"></p-dropdown>
-                    </div>
-                    <div class="field">
-                        <label for="name">Lugar</label>
-                        <p-dropdown [options]="cities" optionLabel="name" placeholder="Select a City"></p-dropdown>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-3 my-2">
-                    <div class="field">
-                        <label for="fecha">Fecha</label>
-                        <input type="date" id="fecha" class="block w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="field">
-                        <label for="hora">Hora</label>
-                        <input type="time" id="hora" class="block w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                <div class="field my-2">
-                    <label>Contenido</label>
-                    <div class="NgxEditor__Wrapper">
-                        <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
-                        <ngx-editor [editor]="editor" [ngModel]="html" [disabled]="false" [placeholder]="'Type here...'"></ngx-editor>
-                    </div>
-                </div>
-            </ng-template>
+                @if (eventForm){
+                    <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
 
-            <ng-template pTemplate="footer">
-                <button class=" mr-2 inline-block px-4 py-2 text-white bg-gray-400 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="hideDialog()">
-                    <i class="pi pi-times mr-2"></i> Cancel
-                </button>
-
-                <button class="inline-block px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-500" (click)="saveProduct()">
-                    <i class="pi pi-check mr-2"></i> Save
-                </button>
+                        @if(eventForm.get('poster').value){
+                            <img [src]="eventForm.get('poster').value" [alt]="eventForm.get('name').value" width="150"
+                                 class="mt-0 mx-auto mb-5 block shadow-2">
+                        }
+                        <div class="field my-2 flex justify-center items-center">
+                            <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
+                        </div>
+                        <div class="field my-2">
+                            <label for="name">Nombre</label>
+                            <input class="p-2" type="text" pInputText id="name" formControlName="name" required autofocus />
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-3 my-2">
+                            <div class="field">
+                                <label for="category">Categoria</label>
+                                <p-dropdown id="category" formControlName="category" [options]="categories" optionLabel="name" placeholder="Select a Category"></p-dropdown>
+                            </div>
+                            <div class="field">
+                                <label for="city">Ciudad</label>
+                                <p-dropdown id="city" formControlName="city" [options]="cities" optionLabel="name" placeholder="Select a City"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-3 my-2">
+                            <div class="field">
+                                <label for="date">Fecha</label>
+                                <input type="date" id="date" formControlName="date" class="block w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="field">
+                                <label for="time">Hora</label>
+                                <input type="time" id="time" formControlName="time" class="block w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="field my-2">
+                            <label>Contenido</label>
+                            <div class="NgxEditor__Wrapper">
+                                <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+                                <ngx-editor [editor]="editor" formControlName="content" [placeholder]="'Type here...'"></ngx-editor>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="mr-2 inline-block px-4 py-2 text-white bg-gray-400 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="hideDialog()">
+                                <i class="pi pi-times mr-2"></i> Cancel
+                            </button>
+                            <button type="submit" class="inline-block px-4 py-2 text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <i class="pi pi-check mr-2"></i> Save
+                            </button>
+                        </div>
+                    </form>
+                }
             </ng-template>
         </p-dialog>
 

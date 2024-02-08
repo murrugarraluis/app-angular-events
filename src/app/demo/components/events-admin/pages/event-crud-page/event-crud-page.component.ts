@@ -6,6 +6,11 @@ import {Table} from "primeng/table";
 import {Editor} from "ngx-editor";
 import {EventService} from "../../../../service/event.service";
 import {Event} from "../../../../interfaces/models/event.interface";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {CityService} from "../../../../service/city.service";
+import {CategoryService} from "../../../../service/category.service";
+import {Category} from "../../../../interfaces/models/category.interface";
+import {City} from "../../../../interfaces/models/city.interface";
 
 interface UploadEvent {
     originalEvent: Event;
@@ -17,11 +22,6 @@ interface PageEvent {
     rows: number;
     page: number;
     pageCount: number;
-}
-
-interface City {
-    name: string;
-    code: string;
 }
 
 @Component({
@@ -36,24 +36,23 @@ export class EventCrudPageComponent {
     html = '';
     text: string | undefined;
 
-    productDialog: boolean = false;
+    productDialog: boolean = true;
 
     deleteProductDialog: boolean = false;
 
-    deleteProductsDialog: boolean = false;
 
     products: Product[] = [];
 
     event: Event | null = null;
 
-    selectedProducts: Product[] = [];
 
     submitted: boolean = false;
 
     cols: any[] = [];
 
     statuses: any[] = [];
-    cities: City[] | undefined;
+    categories: Category[]  = [];
+    cities: City[] = [];
 
     events: Event[] = []
     first!: number;
@@ -62,26 +61,20 @@ export class EventCrudPageComponent {
 
     page = 1;
     search: string = ''
+    eventForm: FormGroup; // Declaración del FormGroup
 
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(private productService: ProductService,
                 private eventService: EventService,
+                private cityService: CityService,
+                private categoryService: CategoryService,
+                private formBuilder: FormBuilder,
                 private messageService: MessageService) {
     }
 
     ngOnInit() {
-        this.cities = [
-            {name: 'New York', code: 'NY'},
-            {name: 'Rome', code: 'RM'},
-            {name: 'London', code: 'LDN'},
-            {name: 'Istanbul', code: 'IST'},
-            {name: 'Paris', code: 'PRS'}
-        ];
-
         this.editor = new Editor();
-        this.productService.getProducts().then(data => this.products = data);
-
         this.cols = [
             {field: 'name', header: 'Nombre'},
             {field: 'poster', header: 'Imagen'},
@@ -90,14 +83,26 @@ export class EventCrudPageComponent {
             {field: 'category', header: 'Categoria'},
             {field: 'city', header: 'Ciudad'}
         ];
-
-        this.statuses = [
-            {label: 'INSTOCK', value: 'instock'},
-            {label: 'LOWSTOCK', value: 'lowstock'},
-            {label: 'OUTOFSTOCK', value: 'outofstock'}
-        ];
-
         this.getEvent(this.page)
+
+
+        this.eventForm = this.formBuilder.group({
+            name: ['', Validators.required], // Control 'name' con validación requerida
+            content: ['', Validators.required], // Control 'content' con validación requerida
+            poster: ['', Validators.required], // Control 'poster' con validación requerida
+            date: ['', Validators.required], // Control 'date' con validación requerida
+            time: ['', Validators.required], // Control 'time' con validación requerida
+            category: ['', Validators.required],
+            city:  ['', Validators.required],
+        });
+
+
+        this.categoryService.getAll().subscribe(response=>{
+            this.categories = response.data
+        })
+        this.cityService.getAll().subscribe(response=>{
+            this.cities = response.data
+        })
     }
 
     getEvent(page: number, city = '', category = '', search = '') {
@@ -112,9 +117,9 @@ export class EventCrudPageComponent {
     }
 
     openNew() {
-        // this.product = {};
-        // this.submitted = false;
-        // this.productDialog = true;
+        this.event = null;
+        this.submitted = false;
+        this.productDialog = true;
     }
 
     show(event: Event) {
@@ -122,25 +127,23 @@ export class EventCrudPageComponent {
         window.open(url, '_blank'); // Abre en una nueva pestaña
     }
 
-    deleteSelectedProducts() {
-        this.deleteProductsDialog = true;
-    }
-
-    editProduct(product: Product) {
-        // this.product = {...product};
-        // this.productDialog = true;
+    editProduct(event: Event) {
+        this.event = {...event};
+        this.eventForm.patchValue({
+            name: this.event.name,
+            content: this.event.content,
+            poster: this.event.poster,
+            date: this.event.date,
+            time: this.event.time,
+            category: this.event.category, // Suponiendo que category es un objeto con una propiedad id
+            city: this.event.city // Suponiendo que city es un objeto con una propiedad id
+        });
+        this.productDialog = true;
     }
 
     deleteProduct(event: Event) {
         this.deleteProductDialog = true;
         this.event = {...event};
-    }
-
-    confirmDeleteSelected() {
-        this.deleteProductsDialog = false;
-        this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-        this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000});
-        this.selectedProducts = [];
     }
 
     confirmDelete() {
@@ -209,36 +212,27 @@ export class EventCrudPageComponent {
         // }
     }
 
-    // findIndexById(id: string): number {
-    //     let index = -1;
-    //     for (let i = 0; i < this.products.length; i++) {
-    //         if (this.products[i].id === id) {
-    //             index = i;
-    //             break;
-    //         }
-    //     }
-    //
-    //     return index;
-    // }
-
     onSearch(value) {
         this.getEvent(this.page, '', '', this.search)
     }
-
+    saveEvent() {
+        console.log(this.eventForm.value)
+        // Verificar si el formulario es válido
+        if (this.eventForm.valid) {
+            // Aquí puedes realizar acciones como enviar los datos del formulario al servidor
+            console.log(this.eventForm.value);
+        } else {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'error',
+                detail: 'Complete todos los campos',
+                life: 3000
+            });
+            // Marcar todos los controles como tocados para mostrar los mensajes de error si los hay
+            // this.eventForm.markAllAsTouched();
+        }
+    }
     onUpload(event: UploadEvent) {
         this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
     }
-
-    // createId(): string {
-    //     let id = '';
-    //     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    //     for (let i = 0; i < 5; i++) {
-    //         id += chars.charAt(Math.floor(Math.random() * chars.length));
-    //     }
-    //     return id;
-    // }
-
-    // onGlobalFilter(table: Table, event: Event) {
-    //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    // }
 }
