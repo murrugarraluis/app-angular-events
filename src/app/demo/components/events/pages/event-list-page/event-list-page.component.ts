@@ -1,6 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Event} from "../../../../interfaces/event.interface";
 import {Router} from "@angular/router";
+import {EventService} from "../../../../service/event.service";
+import {CityService} from "../../../../service/city.service";
+import {City} from "../../../../interfaces/city.interface";
+import {Category} from "../../../../interfaces/category.interface";
+import {CategoryService} from "../../../../service/category.service";
 
 interface PageEvent {
     first: number;
@@ -14,47 +19,65 @@ interface PageEvent {
     templateUrl: './event-list-page.component.html',
     styleUrl: './event-list-page.component.scss'
 })
-export class EventListPageComponent {
-    cities: string[] = ['Trujillo', 'Lima', 'Chiclayo', 'Trujillo'];
+export class EventListPageComponent implements OnInit {
+    cities: City[] = [];
     selectedCity: string = '';
-    items: Event[] = [
-        {
-            id: 1,
-            name: 'Karina & Timoteo',
-            slug: 'karina-timoteo',
-            poster: 'https://s3.us-west-2.amazonaws.com/joinnus.com/user/1586376/NWbx2h7J87poUNq.jpeg',
-            date: '2024-02-07',
-            time: '19:00',
-            description: '',
-            content: 'Karina Rivera y Timoteo (Ricardo Bonilla) están de vuelta para llevarnos a un mundo lleno de emociones y risas. Este espectáculo promete ser inolvidable\n' +
-                '\n' +
-                'Información adicional\n' +
-                '-Niños mayores de 01 año y medio pagan entradas.\n' +
-                '-No cuenta con estacionamiento.',
-            category: {
-                id: 1,
-                name: 'Infantil'
-            },
-            city: {
-                id: 1,
-                name: 'Lima'
-            }
-        }
-    ]
-    first: number = 0;
+    categories: Category[] = [];
+    selectedCategory: string = '';
+    events: Event[] = []
+    first!: number;
+    rows!: number;
+    totalRecords!: number;
 
-    rows: number = 5;
+    page = 1;
 
-    constructor(private route: Router) {
+    constructor(private route: Router,
+                private eventService: EventService,
+                private cityService: CityService,
+                private categoryService: CategoryService
+    ) {
     }
 
-    onPageChange(event: PageEvent) {
-        console.log(event);
+    ngOnInit() {
+        this.getEvent(this.page, this.selectedCity, this.selectedCategory)
+        this.cityService.getAll().subscribe({
+            next: response => {
+                this.cities = response.data
+            }
+        })
+        this.categoryService.getAll().subscribe({
+            next: response => {
+                this.categories = response.data
+            }
+        })
+    }
+
+    async onPageChange(event: PageEvent) {
         this.first = event.first;
         this.rows = event.rows;
+        this.eventService.getAll(event.page + 1).subscribe({
+            next: response => {
+                this.events = response.data
+            }
+        })
+    }
+
+    getEvent(page: number, city: string, category: string) {
+        this.eventService.getAll(page, city, category).subscribe({
+            next: response => {
+                this.events = response.data
+                this.first = response.meta.from
+                this.rows = response.meta.to
+                this.totalRecords = response.meta.total
+            }
+        })
     }
 
     showMore(slug: string) {
         this.route.navigateByUrl(`eventos/${slug}`);
+    }
+
+    onChangeFilter() {
+        this.getEvent(this.page, this.selectedCity.toLowerCase(), this.selectedCategory.toLowerCase())
     }
 }

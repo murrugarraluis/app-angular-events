@@ -10,27 +10,46 @@
     <div class="flex flex-col items-center justify-center my-1">
         <h2 class="text-xl font-semibold mb-4">Categoría:</h2>
         <div class="flex flex-wrap gap-2">
-            <div *ngFor="let city of cities" class="m-2">
-                <input type="radio" id="{{city}}" class="hidden" name="city" [value]="city" [(ngModel)]="selectedCity">
-                <label for="{{city}}" class="cursor-pointer text-gray-800 hover:bg-blue-500 hover:text-white bg-white rounded-3xl border border-blue-300 shadow-sm p-2
-            md:w-auto {{ selectedCity === city ? 'bg-blue-500 text-blue-200' : '' }}">{{ city }}</label>
-            </div>
+            @for (category of categories; track category.id) {
+                <div class="m-2">
+                    <input type="radio" id="{{category.name}}" class="hidden"
+                           name="city" [value]="category.name"
+                           [(ngModel)]="selectedCategory"
+                            (ngModelChange)="onChangeFilter()"
+                    >
+                    <label for="{{category.name}}"
+                           class="cursor-pointer text-gray-800 hover:bg-blue-500 hover:text-white rounded-3xl border border-blue-300 shadow-sm p-2 md:w-auto"
+                           [ngClass]="category.name === selectedCategory ? 'bg-blue-500 text-white' : 'bg-white'"
+                    >
+                        {{ category.name }}
+                    </label>
+                </div>
+            }
         </div>
     </div>
     <div class="flex flex-col items-center justify-center my-1">
-        <h2 class="text-xl font-semibold mb-4">Ciudad:</h2>
+        <h2 class="text-xl font-semibold mb-4">Lugares:</h2>
         <div class="flex flex-wrap gap-2">
-            <div *ngFor="let city of cities" class="m-2">
-                <input type="radio" id="{{city}}" class="hidden" name="city" [value]="city" [(ngModel)]="selectedCity">
-                <label for="{{city}}" class="cursor-pointer text-gray-800 hover:bg-blue-500 hover:text-white bg-white rounded-3xl border border-blue-300 shadow-sm p-2
-            md:w-auto {{ selectedCity === city ? 'bg-blue-500 text-blue-200' : '' }}">{{ city }}</label>
-            </div>
+            @for (city of cities; track city.id) {
+                <div class="m-2">
+                    <input type="radio" id="{{city.name}}" class="hidden" name="city" [value]="city.name"
+                           [(ngModel)]="selectedCity"
+                           (ngModelChange)="onChangeFilter()"
+                    >
+                    <label for="{{city.name}}"
+                           class="cursor-pointer text-gray-800 hover:bg-blue-500 hover:text-white rounded-3xl border border-blue-300 shadow-sm p-2 md:w-auto"
+                           [ngClass]="city.name === selectedCity ? 'bg-blue-500 text-white' : 'bg-white'"
+                    >
+                        {{ city.name }}
+                    </label>
+                </div>
+            }
         </div>
     </div>
 </div>
 <div class="container mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        @for (item of items; track item.id) {
+        @for (item of events; track item.id) {
             <div class="max-w-xl rounded-xl overflow-hidden shadow-5 cursor-pointer hover:shadow-7">
                 <img [src]="item.poster" alt="Placeholder" class="object-cover mx-auto max-w-full max-h-16rem">
                 <div class="px-6 py-4">
@@ -38,7 +57,8 @@
                     <p class="text-gray-700 text-base">{{ item.date + ' ' + item.time }}</p>
                 </div>
                 <div class="px-6 py-4">
-                    <button (click)="showMore(item.slug)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button (click)="showMore(item.slug)"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                         Ver Más
                     </button>
                 </div>
@@ -47,6 +67,6 @@
     </div>
     <div class="mt-6">
         <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
-                     [totalRecords]="30"></p-paginator>
+                     [totalRecords]="totalRecords"></p-paginator>
     </div>
 </div>

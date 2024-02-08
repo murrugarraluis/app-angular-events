@@ -1,15 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {environment} from "../../../environments/environment";
+import {EventResponse} from "../interfaces/event-response.interface";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class EventService {
 
-    constructor(private http: HttpClient) { }
+    private url = environment.api
 
-    getEvents() {
-        return this.http.get<any>('assets/demo/data/scheduleevents.json')
-            .toPromise()
-            .then(res => res.data as any[])
-            .then(data => data);
+    constructor(private http: HttpClient) {
+    }
+
+    getAll(page: number, city: string = '', category: string = '') {
+        return this.http.get<EventResponse>(`${this.url}/events?page=${page}&category=${category}&city=${city}`)
     }
 }
