@@ -4,6 +4,7 @@ import {NotfoundComponent} from './demo/components/notfound/notfound.component';
 import {AppLayoutAdminComponent} from "./layout/app.layout-admin.component";
 import {AppLayoutComponent} from "./layout/app.layout.component";
 import {LoginComponent} from "./demo/components/auth/login/login.component";
+import {AuthGuard} from "./demo/guards/auth.guard";
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import {LoginComponent} from "./demo/components/auth/login/login.component";
             },
             {
                 path: 'admin', component: AppLayoutAdminComponent,
+                canActivate: [AuthGuard],
                 children: [
                     {
                         path: '',

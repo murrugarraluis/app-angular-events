@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { LayoutService } from "../../service/app.layout.service";
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {MenuItem} from 'primeng/api';
+import {LayoutService} from "../../service/app.layout.service";
 
 @Component({
     selector: 'app-topbar',
@@ -16,5 +16,10 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService) {
+    }
+
+    get isActiveLogin(): string | undefined {
+        return localStorage.getItem('token');
+    }
 }

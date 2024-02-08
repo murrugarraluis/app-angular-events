@@ -18,11 +18,13 @@ import {AppConfigModule} from './config/config.module';
 import {AppSidebarComponent} from "./components/sidebar/app.sidebar.component";
 import {AppLayoutAdminComponent} from "./app.layout-admin.component";
 import {AppLayoutComponent} from "./app.layout.component";
+import {AppTopBarAdminComponent} from "./components/topbar/app.topbar-admin.component";
 
 @NgModule({
     declarations: [
         AppMenuitemComponent,
         AppTopBarComponent,
+        AppTopBarAdminComponent,
         AppFooterComponent,
         AppMenuComponent,
         AppSidebarComponent,
