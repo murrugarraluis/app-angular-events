@@ -1,27 +1,47 @@
-# Sakai
+# Angular Proyecto de Gestión de Eventos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
+Este es un proyecto de gestión de eventos construido con Angular y Tailwind CSS. Permite la visualización pública de eventos de diferentes tipos, como deportes, teatro, etc. Además, cuenta con una sección de administración para gestionar los eventos.
 
-## Development server
+## Características
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Visualización pública de eventos de diferentes tipos.
+- Sección de administración para gestionar eventos.
+- Construido con Angular para la interfaz de usuario dinámica.
+- Utiliza Tailwind CSS para estilos modernos y flexibles.
+- Interfaz de usuario intuitiva y fácil de usar.
 
-## Code scaffolding
+## Requisitos Previos
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Node.js y npm deben estar instalados en tu sistema.
+- Angular CLI debe estar instalado globalmente.
 
-## Build
+## Configuración del Proyecto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Instala las dependencias del proyecto.
+    ```
+    npm install
+   ```
+2. Inicia el servidor de desarrollo.
+    ```
+    ng serve
+    ```
+3. Abre tu navegador y visita `http://localhost:4200/` para ver la aplicación.
 
-## Running unit tests
+## Uso
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Visualización Pública de Eventos
 
-## Running end-to-end tests
+- Explora la lista de eventos disponibles.
+- Filtra los eventos por tipo (deporte, teatro, etc.).
+- Accede a los detalles de un evento para obtener más información.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Sección de Administración
 
-## Further help
+- Inicia sesión en la sección de administración con tus credenciales.
+- Gestiona los eventos existentes (crear, editar, eliminar).
+- Accede a métricas y estadísticas sobre los eventos.
+- Administra usuarios y permisos de acceso.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Autor
+
+Autor: Luis Murrugarra
