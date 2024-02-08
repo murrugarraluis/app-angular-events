@@ -14,8 +14,8 @@ export class EventService {
     constructor(private http: HttpClient) {
     }
 
-    getAll(page: number, city: string = '', category: string = '') {
-        return this.http.get<EventResponse>(`${this.url}/events?page=${page}&category=${category}&city=${city}`)
+    getAll(page: number, city: string = '', category: string = '',search = '') {
+        return this.http.get<EventResponse>(`${this.url}/events?page=${page}&category=${category}&city=${city}&search=${search}`)
     }
 
     getOne(slug: string) {

@@ -20,6 +20,7 @@ import {ToolbarModule} from "primeng/toolbar";
 import {EditorModule} from "primeng/editor";
 import {NgxEditorModule} from "ngx-editor";
 import {CalendarModule} from "primeng/calendar";
+import {PaginatorModule} from "primeng/paginator";
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import {CalendarModule} from "primeng/calendar";
         EditorModule,
         NgxEditorModule,
         CalendarModule,
+        PaginatorModule,
     ]
 })
 export class EventsAdminModuleModule {

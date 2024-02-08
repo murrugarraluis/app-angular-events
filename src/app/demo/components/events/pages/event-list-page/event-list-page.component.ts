@@ -52,7 +52,7 @@ export class EventListPageComponent implements OnInit {
         })
     }
 
-    async onPageChange(event: PageEvent) {
+    onPageChange(event: PageEvent) {
         this.first = event.first;
         this.rows = event.rows;
         this.eventService.getAll(event.page + 1,this.selectedCity.toLowerCase(),this.selectedCategory.toLowerCase()).subscribe({
