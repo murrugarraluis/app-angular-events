@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+    api: 'https://api-laravel-events-production.up.railway.app'
 };
