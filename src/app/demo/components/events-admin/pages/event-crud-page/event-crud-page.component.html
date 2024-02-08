@@ -8,7 +8,7 @@
                         <button
                             class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                             (click)="openNew()">
-                            New
+                            Nuevo
                             <i class="pi pi-plus ml-1"></i>
                         </button>
                     </div>
@@ -46,44 +46,44 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-event>
                     <tr>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Nombre</span>
-                            {{ product.name }}
+                            {{ event.name }}
                         </td>
                         <td style="width:14%; min-width:10rem;"><span class="p-column-title">Imagen</span>
-                            <img [src]="product.poster" [alt]="product.name" width="100"
+                            <img [src]="event.poster" [alt]="event.name" width="100"
                                  class="shadow-4"/>
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Fecha</span>
-                            {{ product.date }}
+                            {{ event.date }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Hora</span>
-                            {{ product.time }}
+                            {{ event.time }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Categoria</span>
-                            {{ product.category.name }}
+                            {{ event.category.name }}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Ciudad</span>
-                            {{ product.city.name }}
+                            {{ event.city.name }}
                         </td>
                         <td>
                             <div class="flex">
                                 <button class="p-2 rounded-full bg-blue-500 text-white mr-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-                                        (click)="show(product)">
+                                        (click)="show(event)">
                                     <i class="pi pi-eye"></i>
                                 </button>
                                 <button class="p-2 rounded-full bg-green-500 text-white mr-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-                                        (click)="editProduct(product)">
+                                        (click)="editEvent(event)">
                                     <i class="pi pi-pencil"></i>
                                 </button>
                                 <button class="p-2 rounded-full bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                        (click)="deleteProduct(product)">
+                                        (click)="deleteEvent(event)">
                                     <i class="pi pi-trash"></i>
                                 </button>
                             </div>
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '750px'}" header="Product Details" [modal]="true"
+        <p-dialog [(visible)]="eventDialog" [style]="{width: '750px'}" header="Evento" [modal]="true"
                   class="p-fluid">
             <ng-template pTemplate="content">
                 @if (eventForm){
@@ -108,7 +108,10 @@
                                  class="mt-0 mx-auto mb-5 block shadow-2">
                         }
                         <div class="field my-2 flex justify-center items-center">
-                            <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
+                            <input #fileInputRef type="file" accept="image/*" id="fileInput" class="hidden" (change)="onFileSelected($event)">
+                            <a class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" (click)="openFileInput()">
+                                {{ selectedFile?.name||'Selecciona Imagen' }}
+                            </a>
                         </div>
                         <div class="field my-2">
                             <label for="name">Nombre</label>

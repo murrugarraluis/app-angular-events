@@ -25,6 +25,6 @@ export class FileUploadService {
         };
         const formData: FormData = new FormData();
         formData.append('file', payload.file); // Asegúrate de que 'file' sea el nombre que espera tu servidor para el archivo
-        return this.http.post<FileUploadResponse>(`${this.url}/events`, formData, options)
+        return this.http.post<FileUploadResponse>(`${this.url}/upload-image`, formData, options)
     }
 }
