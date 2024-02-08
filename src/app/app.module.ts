@@ -12,12 +12,15 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import {NgxEditorModule} from "ngx-editor";
+import {JsonContentTypeInterceptor} from "./demo/interceptor/json-content-type.interceptor";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [AppRoutingModule,AppLayoutModule,NgxEditorModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        { provide: HTTP_INTERCEPTORS, useClass: JsonContentTypeInterceptor, multi: true },
         CountryService,
         CustomerService,
         EventService,

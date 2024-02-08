@@ -54,7 +54,6 @@
 
         i {
             font-size: 1.5rem;
-            display: none;
         }
 
         span {
@@ -82,7 +81,9 @@
         padding: 0;
         list-style: none;
         display: flex;
-
+        i{
+            display:none
+        }
         .layout-topbar-button {
             margin-left: 1rem;
         }
@@ -123,6 +124,9 @@
             display: none;
             -webkit-animation: scalein 0.15s linear;
             animation: scalein 0.15s linear;
+            i{
+                display:none
+            }
 
             &.layout-topbar-menu-mobile-active {
                 display: block
