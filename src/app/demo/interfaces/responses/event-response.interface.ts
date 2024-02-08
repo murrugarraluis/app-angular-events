@@ -1,5 +1,5 @@
-import {PaginationMeta} from "./pagination-meta.interface";
-import {Event} from "./event.interface";
+import {PaginationMeta} from "../pagination-meta.interface";
+import {Event} from "../models/event.interface";
 
 export interface EventResponse {
     data: Event[];

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Event} from "../../../../interfaces/event.interface";
+import {Event} from "../../../../interfaces/models/event.interface";
 import {Router} from "@angular/router";
 import {EventService} from "../../../../service/event.service";
 import {CityService} from "../../../../service/city.service";
-import {City} from "../../../../interfaces/city.interface";
-import {Category} from "../../../../interfaces/category.interface";
+import {City} from "../../../../interfaces/models/city.interface";
+import {Category} from "../../../../interfaces/models/category.interface";
 import {CategoryService} from "../../../../service/category.service";
 
 interface PageEvent {
@@ -55,7 +55,7 @@ export class EventListPageComponent implements OnInit {
     async onPageChange(event: PageEvent) {
         this.first = event.first;
         this.rows = event.rows;
-        this.eventService.getAll(event.page + 1).subscribe({
+        this.eventService.getAll(event.page + 1,this.selectedCity.toLowerCase(),this.selectedCategory.toLowerCase()).subscribe({
             next: response => {
                 this.events = response.data
             }
